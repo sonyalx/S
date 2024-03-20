@@ -1,0 +1,29 @@
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+[RequireComponent(typeof(AudioSource))]
+public class Spawner : MonoBehaviour
+{
+    public GameObject[] prefabs;
+    public Transform[] spawnPoints;
+    [Range(1, 10)]
+    public int minSpawnTime = 5;
+    [Range(5, 20)]
+    public float speed = 1;
+    private float nextSpawn = 0;
+    AudioSource audio;
+
+    IEnumerator Start()
+    {
+        while (true)
+        {
+            Spawn();
+            yield return new WaitForSeconds(Random.Range(minSpawnTime, minSpawnTime * 2));
+        }
+    }
+
+    public void Spawn()
+    {
+        if (nextSpawn < Time.time)
+        {
+            nextSpawn = Time.time + Random.Range(0, speed);
